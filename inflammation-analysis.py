@@ -3,7 +3,7 @@
 
 import argparse
 
-from inflammation import models, views
+from inflammation import models, views, serializers
 
 
 def main(args):
@@ -18,15 +18,31 @@ def main(args):
         infiles = [args.infiles]
 
     for filename in infiles:
-        inflammation_data = models.load_csv(filename)
+        if args.file_type == 'cvs':
+            inflammation_data = models.load_csv(filename)
+        elif args.file_type == 'json':
+            inflammation_data = serializers.PatientJSONSerializer.load(filename)
 
-        view_data = {
-            'average': models.daily_mean(inflammation_data),
-            'max': models.daily_max(inflammation_data),
-            'min': models.daily_min(inflammation_data)
-        }
+        if args.view == 'visualize':
+            view_data = {
+                'average': models.daily_mean(inflammation_data),
+                'max': models.daily_max(inflammation_data),
+                'min': models.daily_min(inflammation_data),
+            }
 
-        views.visualize(view_data)
+            views.visualize(view_data)
+
+        elif args.view == 'record' and args.file_type == 'cvs':
+            patient_data = inflammation_data[args.patient]
+            observations = [models.Observation(day, value) for day, value in enumerate(patient_data)]
+            patient = models.Patient('UNKNOWN', observations)
+
+            views.display_patient_record(patient)
+
+        elif args.view == 'record' and args.file_type == 'json':
+            for patient in inflammation_data:
+                #print(patient.name)
+                views.display_patient_record(patient)
 
 
 if __name__ == "__main__":
@@ -35,10 +51,29 @@ if __name__ == "__main__":
         description='A basic patient inflammation data management system')
 
     parser.add_argument(
-        'infiles',
+        '--infiles',
         nargs='+',
-        help='Input CSV(s) containing inflammation series for each patient')
+        help='Input containing inflammation series for each patient')
+
+    parser.add_argument(
+        '--file_type',
+        default='cvs',
+        choices=['cvs', 'json'],
+        help='The file type to load')
+
+    parser.add_argument(
+        '--view',
+        default='visualize',
+        choices=['visualize', 'record'],
+        help='Which view should be used?')
+
+    parser.add_argument(
+        '--patient',
+        type=int,
+        default=0,
+        help='Which patient should be displayed?')
 
     args = parser.parse_args()
 
     main(args)
+
