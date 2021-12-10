@@ -4,6 +4,7 @@ from abc import ABC
 
 
 class Serializer(ABC):
+    """Basic serializer without methods implemented"""
     pass
 
     @classmethod
@@ -24,6 +25,7 @@ class Serializer(ABC):
 
 
 class ObservationSerializer(Serializer):
+    """Serialize a generic observation"""
     model = models.Observation
 
     @classmethod
@@ -39,6 +41,7 @@ class ObservationSerializer(Serializer):
 
 
 class PatientSerializer:
+    """Serialize a patient observation"""
     model = models.Patient
 
     @classmethod
@@ -60,6 +63,7 @@ class PatientSerializer:
 
 
 class PatientJSONSerializer(PatientSerializer):
+    """JSON specific seriazation for PatientSerializer"""
     @classmethod
     def save(cls, instances, path):
         with open(path, 'w') as jsonfile:
