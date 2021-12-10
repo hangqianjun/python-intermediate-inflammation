@@ -63,6 +63,7 @@ class PatientSerializer:
 
 
 class PatientJSONSerializer(PatientSerializer):
+    """JSON specific seriazation for PatientSerializer"""
     @classmethod
     def save(cls, instances, path):
         with open(path, 'w') as jsonfile:
