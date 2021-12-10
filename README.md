@@ -35,7 +35,11 @@ After cloning the repository ([download](https://github.com/CESumner/python-inte
 
 To view data in a csv file, call the inflamation-analysis python file with --view record option, for the patient you would like view, and with a pointer to the csv file containing the data.
 
-> python3 inflammation-analysis.py --view record --patient 1 data/inflammation-01.csv
+> python3 inflammation-analysis.py --view record --patient 1 --infile data/inflammation-01.csv --file_type csv
+
+You can also view a json file by changing the --file_type to json.
+
+> python3 inflammation-analysis.py --view record --patient 1 --infile tests/patients.json --file_type json
 
 ## Credits/Acknowledgements
 
