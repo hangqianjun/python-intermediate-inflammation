@@ -27,7 +27,7 @@ The following optional packages are required to run Inflam's unit tests:
 
 ## Installation/deployment
 
-After cloning the repository ([download](https://github.com/CESumner/python-intermediate-inflammation.git)) the attached requirements file can be used to install dependencies with:
+After cloning the repository ([download](https://github.com/hangqianjun/python-intermediate-inflammation.git)) the attached requirements file can be used to install dependencies with:
 
 > $ pip3 install -r requirements.txt
 
